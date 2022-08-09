@@ -1,0 +1,29 @@
+{
+  "name": "Faceit Forecast",
+  "version": "0.1",
+  "description": "We analyse your map picks.",
+  "manifest_version": 3,
+  "icons": {
+    "16": "./img/16.png",
+    "32": "./img/32.png",
+    "48": "./img/48.png",
+    "128": "./img/128.png"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://www.faceit.com/*"
+      ],
+      "js": [
+        "jquery.js", "script.js"
+      ],
+      "css": [
+        "./style.css"
+      ]
+    }
+  ],
+  "permissions": [],
+  "host_permissions": [
+    "https://www.faceit.com/*"
+  ]
+}
