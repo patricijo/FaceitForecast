@@ -34,15 +34,15 @@ const getData = async () => {
 
   if (!data.find((data) => data["matchID"] === matchID)) {
     playerCounter = 0;
+    document.body.insertAdjacentHTML(
+      "beforeend",
+      '<div class="fetchingData"><div class="lds-ring"><div></div><div></div><div></div><div></div></div><div class="fetchingH1">Fetching Data</div><div class="fetchingText">0/10 Players</div></div>'
+    );
     const updateFetchText = () => {
       playerCounter++;
       document.body.querySelector(".fetchingText").innerHTML =
         playerCounter + "/10 Players";
     };
-    document.body.insertAdjacentHTML(
-      "beforeend",
-      '<div class="fetchingData"><div class="lds-ring"><div></div><div></div><div></div><div></div></div><div class="fetchingH1">Fetching Data</div><div class="fetchingText">0/20 Players</div></div>'
-    );
 
     data.push({ matchID: matchID, rating: [] });
 
@@ -100,8 +100,6 @@ const getData = async () => {
     document.body.querySelector(".fetchingData").remove();
   }
 
-  console.log("zffg", data);
-
   getShadowDom();
 };
 
@@ -136,15 +134,24 @@ const playerStats = async (playerID, team, matchRatings) => {
       player_stats_map.stats["Matches"] > 5
     ) {
       const realWinRate =
-        50 + player_stats_map.stats["Win Rate %"] - playerData.totalRate;
+        50 + (player_stats_map.stats["Win Rate %"] - playerData.totalRate) * 2;
       const playRate =
-        1 + player_stats_map.stats["Matches"] / playerData.totalMatches / 2;
+        1 + player_stats_map.stats["Matches"] / playerData.totalMatches / 5;
       const avgFrags =
         (player_stats_map.stats["Average Kills"] *
           player_stats_map.stats["Average K/D Ratio"] *
           player_stats_map.stats["Average K/R Ratio"]) /
         10;
-      const finalRating = Math.floor(realWinRate * playRate * avgFrags);
+
+      let smurfBonus = 1;
+      if (
+        player_stats_map.stats["Matches"] < 350 &&
+        player_stats_map.stats["Average K/D Ratio"] > 1.2 &&
+        player_stats_map.stats["Average Kills"] > 22
+      ) {
+        smurfBonus = 1.2;
+      }
+      const finalRating = Math.floor(realWinRate * playRate * smurfBonus);
       const ratingData = {
         team: team,
         map: player_stats_map.label.replace("de_", ""),
