@@ -1,7 +1,7 @@
 {
-  "name": "Faceit Forecast",
+  "name": "Faceit Forecast Beta",
   "version": "0.1",
-  "description": "We analyse your map picks.",
+  "description": "Forcast the Faceit match outcome for each map!",
   "manifest_version": 3,
   "icons": {
     "16": "./img/16.png",
